@@ -16,6 +16,8 @@ class packageController extends Controller
      *
      * @return void
      */
+    
+
     public function __construct()
     {
         $this->middleware('auth',['except' =>['index','show']]);
@@ -30,7 +32,7 @@ class packageController extends Controller
          $posts = packages::all();
 
          // load the view and pass the sharks
-         return view('admin.package',compact('posts'));
+         return view('package.package',compact('posts'));
     }
 
     /**
@@ -71,7 +73,8 @@ class packageController extends Controller
         $this->validate($request,[
             'title'=>'required',
             'body'=>'required',
-            'cover_image'=>'image|nullable|max:1999'
+            'cover_image'=>'image|nullable|max:1999',
+            'price'=>'required'
         ]);
 
         //Handle file uploads
@@ -93,6 +96,7 @@ class packageController extends Controller
             $posts->body=$request->input('body');
             $posts->user_id=auth()->user()->id;
             $posts->cover_image=$fileNameToStore;
+            $posts->price=$request->input('price');
             $posts->save();
 
             return redirect('admin/package')->with('success','post created');

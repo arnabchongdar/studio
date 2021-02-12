@@ -23,5 +23,13 @@ Route::get('admin/adminHome', 'HomeController@adminHome');
 Route::get('studio/studio', 'HomeController@studioHome');
 
 
-Route::get('/package', 'packageController@package');
+Route::get('package', 'packageController@package');
+Route::get('admin/package', 'packageController@package');
+Route::get('admin/create', 'packageController@create');
+/*Route::POST('admin/store', 'packageController@store');
+Route::get('package/edit', 'packageController@edit');
+Route::POST('package/destroy', 'packageController@destroy');*/
+Route::resource('packages', 'packageController');
+Route::resource('cart', 'cartController');
+
 

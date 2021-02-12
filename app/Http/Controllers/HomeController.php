@@ -30,6 +30,7 @@ class HomeController extends Controller
         return view('admin/adminHome');
     }
 
+    
     public function studioHome()
     {
         return view('studio/studio');
