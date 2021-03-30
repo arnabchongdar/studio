@@ -4,58 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\studio_profile;
-use App\user;
 
-class HomeController extends Controller
+class studioProfileController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Display a listing of the resource.
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
+  
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('guest')->except('logout');
+    }
+
+
+    public function index()
+    {
+      
     }
 
     /**
-     * Show the application dashboard.
+     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $posts = studio_profile::all();
-
-
-        return view('studio.studioProfile',compact('posts'));
-    }
-    public function customerindex()
-    {
-        $posts = user::all();
-
-
-        return view('customerProfile',compact('posts'));
-    }
-    
-    
-    
-     public function customerHome()
-    {
-        return view('customerhome');
-    }
-    public function adminHome()
-    {
-        return view('admin/adminHome');
-    }
-
-    
-    public function studioHome()
-    {
-        return view('studio/studio');
-    }
-    
-
     public function create()
     {
         return view('studio.studioCreate');
@@ -136,12 +109,6 @@ class HomeController extends Controller
         $posts= studio_profile::find($id);
     
      return view('studio.profileedit', compact('posts')); 
-    }
-    public function customeredit($id)
-    {
-        $posts= user::find($id);
-    
-     return view('customerprofileedit', compact('posts')); 
     }
 
     /**

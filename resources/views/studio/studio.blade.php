@@ -8,8 +8,9 @@
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
                     You are studio user.
+                    <a href="{{url('profile')}}">Profile</a>
                 </div>
-            </div>
+            </div>   
         </div>
     </div>
 </div>

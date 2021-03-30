@@ -38,7 +38,7 @@ class RegisterController extends Controller
         } else if (auth()->user()->user_type==3) {
             return 'studio/studio';
         } else {
-            return '/home';
+            return '/customerhome';
         }
     }
     

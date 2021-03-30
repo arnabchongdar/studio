@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
    
 @section('content')
 <div class="container">
@@ -7,11 +7,8 @@
             <div class="card">
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
-                    You are Admin user.
+                    You are normal user.
                 </div>
-                Process the orders
-                <a href="{{url('orders')}}">orders</a>
-                <a href="{{url('profile')}}">studio</a>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\packages;
+use App\cart;
 
 class cartController extends Controller
 {
@@ -12,12 +12,38 @@ class cartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    { $posts = packages::all();
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-        // load the view and pass the sharks
-       
-        return view('pages.cart',compact('posts'));
+    public function index()
+    { 
+    }
+
+    public function addtocart(Request $request,$product_id){
+        $check =cart::where('package_id',$product_id)->where('customer_mail',auth()->user()->email)->first();
+        if($check){
+            cart::where('package_id',$product_id)->where('customer_mail',auth()->user()->email)->increment('qty');
+            return Redirect()->back()->with('success','Product added on Cart');
+        }
+        else{
+            cart::insert([
+                'package_id'=>$product_id,
+                'qty'=> 1,
+                'price'=>$request->price,
+                'cover_image'=>$request->cover_image,
+                'customer_mail'=>auth()->user()->email,
+            ]);
+            return Redirect()->back()->with('success','Product added on Cart');
+            }
+    }
+
+
+    public function cartPage(){
+
+        $carts=cart::all();
+        return view('pages.cart',compact('carts'));
     }
 
     /**
@@ -72,7 +98,12 @@ class cartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        cart::where('package_id',$id)->where('customer_mail',auth()->user()->email)->update([
+
+            'qty'=>$request->qty,
+      
+          ]);
+          return Redirect()->back()->with('cart_updated','Product updated in  Cart');
     }
 
     /**
@@ -83,6 +114,23 @@ class cartController extends Controller
      */
     public function destroy($id)
     {
-        //
+        cart::where('package_id',$id)->where('customer_mail',auth()->user()->email)->delete();
+        return Redirect()->back()->with('cart_delete','Product deleted from  Cart');
     }
+
+
+
+
+public function quantityUpdate(Request $request,$product_id){
+     $check =cart::where('package_id',$product_id)->where('customer_mail',auth()->user()->email)->first();
+        if($check){
+            cart::where('package_id',$product_id)->where('customer_mail',auth()->user()->email)->update([
+                'qty'=>$request->qty,
+                ]);
+            return Redirect()->back()->with('success','Product added on Cart');
+        }
+       
+           
 }
+}
+

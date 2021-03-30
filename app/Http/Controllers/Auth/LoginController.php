@@ -58,7 +58,7 @@ class LoginController extends Controller
                 return redirect('studio/studio');
             }
             elseif(auth()->user()->user_type == 2){
-                return redirect('home');
+                return redirect('customerhome');
             }
         }
         else{

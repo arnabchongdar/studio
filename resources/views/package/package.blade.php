@@ -29,8 +29,11 @@
             <td>{{$crud->price}}</td>
 
             <td> 
-                <form action="{{ route('cart.index', $crud->id)}}" method="POST">  
+                <form action="{{ url('addtocart'. $crud->id)}}" method="POST">  
                      @csrf  
+                       <input type="hidden" name="price" value="{{$crud->price}}">
+                       <input type="hidden" name="cover_image" value="{{$crud->cover_image}}">
+                       <input type="hidden" name="customer_mail" value="@php auth()->user()->email @endphp">
                        
                      <button class="btn btn-danger" type="submit">Add to Cart</button>  
                    </form>  

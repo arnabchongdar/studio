@@ -42,7 +42,7 @@ class packageController extends Controller
      */
     public function create()
     {
-        return view('package.create');
+        return view('admin.create');
     }
 
     /**
@@ -138,24 +138,41 @@ class packageController extends Controller
     public function update(Request $request, $id)
     {
         
-        $request->validate([  
-            'title'=>'required',  
-            'body'=>'required',  
-              
-        ]);  
+        $request->validate($request,[
+            'title'=>'required',
+            'body'=>'required',
+            'cover_image'=>'image|nullable|max:1999',
+            'price'=>'required'
+        ]);
   
-        $posts =packages::find($id);  
-        $posts->title=$request->input('title');
-        $posts->body=$request->input('body');
-        $posts->save();
-        return redirect('admin/package')->with('success','post updated');
+        //Handle file uploads
 
+        if($request->hasFile('cover_image')){
+            $filenameWithExt=$request->file('cover_image')->getClientOriginalName();
+
+            $filename= pathinfo($filenameWithExt,PATHINFO_FILENAME);
+
+            $extension=$request->file('cover_image')->getClientOriginalExtension();
+            $fileNameToStore=$filename.'_'.time().'.'.$extension;
+
+            $path=$request->file('cover_image')->storeAs('public/cover_images',$fileNameToStore);
+        }else{
+            $fileNameToStore="noimage.jpg";
+        }
+            $posts =packages::find($id);
+            $posts->title=$request->input('title');
+            $posts->body=$request->input('body');
+            $posts->user_id=auth()->user()->id;
+            $posts->cover_image=$fileNameToStore;
+            $posts->price=$request->input('price');
+            $posts->save();
 
 
 
 
 
     }
+
 
     /**
      * Remove the specified resource from storage.
